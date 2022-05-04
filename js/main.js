@@ -203,7 +203,7 @@ function createPlaceholder(authorName) {
   //creiamo stringa elemento dom
   const placeholder = `
   <div class="profile-pic-default">
-  <span>${initials}</span>`;
+  <span>${initials}</span></div>`;
 
   return placeholder;
 }
