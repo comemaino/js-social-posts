@@ -8,11 +8,11 @@ const posts = [
       name: "Phil Mangione",
       image: "https://unsplash.it/300/300?image=15",
     },
-    likes: 80,
+    likes: 60,
     created: "2021-06-25",
   },
   {
-    id: 1,
+    id: 2,
     content:
       "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.",
     media: "https://unsplash.it/600/300?image=151",
@@ -24,7 +24,7 @@ const posts = [
     created: "2021-06-25",
   },
   {
-    id: 1,
+    id: 3,
     content:
       "Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.",
     media: "https://unsplash.it/600/300?image=161",
@@ -32,7 +32,7 @@ const posts = [
       name: "Phil Bevone",
       image: "https://unsplash.it/300/300?image=12",
     },
-    likes: 80,
+    likes: 90,
     created: "2021-06-25",
   },
 ];
@@ -43,9 +43,43 @@ const container = document.getElementById("container");
 posts.forEach((post) => {
   //Crea elemento HTML
   const createdPost = createPostElement(post);
-  console.log(createdPost);
+  // console.log(createdPost);
   //appende al container
   container.innerHTML += createdPost;
+});
+
+const likedPosts = [];
+
+const likeBtns = document.querySelectorAll(".js-like-button");
+console.log(likeBtns);
+likeBtns.forEach((button, index) => {
+  button.addEventListener("click", function (event) {
+    event.preventDefault();
+    console.log("clicked");
+    //cambiare il colore al bottone
+    this.classList.add("like-button--liked");
+    //incrementare il counter
+    // prelevo post clickato dall'array di oggetti tramite index del bottone nell'array
+    const clickedPost = posts[index];
+    // prelevo id oggetto clickato
+    const clickedPostId = clickedPost.id;
+    // prelevo da html l'elemento che contiene il numero di likes
+    const likeCounter = document.getElementById(
+      `like-counter-${clickedPostId}`
+    );
+    // da questo elemento prelevo numero likes e trasformo in integer
+    let likesNumber = parseInt(likeCounter.textContent);
+    // incremento numero likes
+    likesNumber = likesNumber + 1;
+    // riscrivo contenuto elemento html
+    likeCounter.innerHTML = likesNumber;
+    // salvo nuovo numeri di likes nell'array
+    clickedPost.likes = likesNumber;
+
+    // salvo posts likati in nouvo array
+    likedPosts.push(clickedPostId);
+    console.log(likedPosts);
+  });
 });
 
 //FUNCTIONS
@@ -70,7 +104,7 @@ function createPostElement(postObject) {
       </div>
       <div class="post-meta__data">
         <div class="post-meta__author">${author.name}</div>
-        <div class="post-meta__time">${created}</div>
+        <div class="post-meta__time">${formatDate(created)}</div>
       </div>
     </div>
   </div>
@@ -100,3 +134,21 @@ function createPostElement(postObject) {
   `;
   return postElement;
 }
+
+/**
+ * prende stringa data in us format trasforma in it format
+ * @param {string} originalDate -> data us format
+ * @returns {string} -> data in it format
+ */
+function formatDate(originalDate) {
+  // const usDateArray = originalDate.split("-");
+  // console.log(usDateArray);
+  // const reversedDateArray = usDateArray.reverse();
+  // const itDateString = reversedDateArray.join("/");
+
+  const itDateString = originalDate.split("-").reverse().join("/");
+  console.log(itDateString);
+  return itDateString;
+}
+
+formatDate("2022-05-04");
